@@ -20,5 +20,5 @@ This bot uses python-telegram package and Mastodon.py with telegram and Mastodon
 - Send toot in different status
 - Multiple account
 
-##try
+## try
 
