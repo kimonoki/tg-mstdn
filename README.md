@@ -1,5 +1,5 @@
 # Introduction
-This telegram bot can send toot to any a given mastodon instance
+This telegram bot can send toot to a given mastodon instance
 
 ## Use the bot
 1. Set the token for telegram bot
