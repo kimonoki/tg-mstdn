@@ -1,5 +1,6 @@
 # Introduction
-This telegram bot can send toot to a given mastodon instance
+This script creates a telegram bot that can send toot to a given mastodon instance via access token.
+
 
 ## Use the bot
 1. Set the token for telegram bot
@@ -9,7 +10,8 @@ This telegram bot can send toot to a given mastodon instance
 
 ## Develop
 1. Clone the project. 
-2. Under python3 environment. Install python-telegram-bot and Mastodon.py package
+2. In python 3 environment. 
+Install python-telegram-bot and Mastodon.py package
 
 ### API used
 This bot uses python-telegram package and Mastodon.py with telegram and Mastodon API.
@@ -17,8 +19,13 @@ This bot uses python-telegram package and Mastodon.py with telegram and Mastodon
 
 ## TODO
 - Test
+- Error Handling
 - Send toot in different status
-- Multiple account
+- Send toots in other formats (video etc.)
+- Multiple instances
 
-## try
 
+## try (to deploy)
+- Heroku
+- VPS
+- Online python IDE
