@@ -23,6 +23,7 @@ This bot uses python-telegram package and Mastodon.py with telegram and Mastodon
 - Send toot in different status
 - Send toots in other formats (video etc.)
 - Multiple instances
+- Stream
 
 
 ## try (to deploy)
