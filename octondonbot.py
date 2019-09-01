@@ -25,7 +25,7 @@ def my_info(bot, update):
     user_id = update.effective_user.id
     if user_id in accounts_information and all(
             k in accounts_information[user_id] for k in ("instances address", "access token")):
-        veryify_account(bot, update, user_id)
+        verify_account(bot, update, user_id)
     else:
         notify_incomplete_information(bot, update)
 
@@ -44,7 +44,7 @@ def set_instance_address(bot, update, args):
         accounts_information[user_id]["instances address"] = args[0]
         if "access token" in accounts_information[user_id]:
             set_mastodon_client(user_id)
-            veryify_account(bot, update, user_id)
+            verify_account(bot, update, user_id)
         else:
             notify_missing_information(bot, update, 'Now please set your access token')
 
@@ -57,7 +57,7 @@ def set_access_token(bot, update, args):
         accounts_information[user_id]["access token"] = args[0]
         if "instances address" in accounts_information[user_id]:
             set_mastodon_client(user_id)
-            veryify_account(bot, update, user_id)
+            verify_account(bot, update, user_id)
         else:
             notify_missing_information(bot, update, 'Now please set your instance url')
 
@@ -94,7 +94,7 @@ def toot(bot, update, visibility='public'):
 
 
 # helper functions
-def veryify_account(bot, update, user_id):
+def verify_account(bot, update, user_id):
     try:
         mastodon_client = accounts_information[user_id]["mastodon client"]
         mastodon_client.account_verify_credentials()
