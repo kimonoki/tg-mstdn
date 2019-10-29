@@ -5,7 +5,7 @@ This script creates a telegram bot that can send toot to a given mastodon instan
 ## Use the bot
 1. Set the token for telegram bot
 2. Set mastodon's instance and access token
-3. send toot with visibility settings
+3. Toot from telegram bot
 
 
 ## Develop
