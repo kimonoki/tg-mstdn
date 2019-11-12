@@ -126,7 +126,7 @@ def set_mastodon_client(user_id):
 def upload_media(bot, update, mastodon_client, file_path):
     new_file = update.message.photo[-1].get_file()
     new_file.download(file_path)
-    media_id = mastodon_client.media_post(file_path, description="test").id
+    media_id = mastodon_client.media_post(file_path, description=" ").id
     return media_id
 
 
