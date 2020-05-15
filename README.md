@@ -3,7 +3,7 @@ This script creates a telegram bot that can send toot to a given mastodon instan
 
 
 ## Use the bot
-1. Set the token for telegram bot
+1. Set the token for telegram bot. [link](https://github.com/kimonoki/tg-mstdn/blob/33eefe4b9122e90b4a48ef5b69a1bcb4a5eb554f/octondonbot.py#L8)
 2. Set mastodon's instance and access token
 3. Toot
 
