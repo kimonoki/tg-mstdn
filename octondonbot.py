@@ -167,7 +167,7 @@ dispatcher = updater.dispatcher
 
 accounts_information = {}
 
-# main help mesage in markdown format
+# main help message in markdown format
 help_message = """\
 Use /set\_instance and /set\_accesstoken to set your account.
 Use /myinfo to check if your mastodon account is correctly set up
