@@ -12,6 +12,9 @@ pm2 start tg-mastodon.py --interpreter python3
 
 ## Use the telegram bot
 1. Set mastodon's instance and access token
+
+Needed access scope is: `read:accounts write:media write:statuses`
+
 ```
 /set_instance url
 /set_accesstoken accesstoken
