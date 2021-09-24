@@ -14,7 +14,7 @@ This script creates a telegram bot that can send toot to a given mastodon instan
 Install [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) and [Mastodon.py](https://github.com/halcy/Mastodon.py) package
 
 ### API used
-This bot uses python-telegram package and Mastodon.py with telegram and Mastodon API.
+This bot uses python-telegram package and Mastodon.py with telegram and Mastodon API. (support the latest version 2021-09-24)
 
 
 ## TODO
