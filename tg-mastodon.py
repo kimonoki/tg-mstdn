@@ -66,8 +66,23 @@ def set_access_token(update, context):
                 update, context, 'Now please set your instance url')
 
 
+def set_visibility(update, context):
+    set_visibility_help_text = "please send \"private\", \"unlisted\" or \"public\""
+    if context.args:
+        if context.args[0] != "public" and context.args[0] != "private" and context.args[0] != "unlisted":
+            bot_send_message(
+                update, context, set_visibility_help_text)
+        else:
+            accounts_information["visibility"] = context.args[0]
+            bot_send_message(
+                update, context, "Toot visibility is now " + accounts_information["visibility"])
+    else:
+        bot_send_message(
+            update, context, set_visibility_help_text)
+
+
 # send toot to your instance
-def toot(update, context, visibility='public'):
+def toot(update, context):
 
     user_id = update.effective_user.id
     if user_exists(user_id) and user_information_is_complete(user_id):
@@ -76,27 +91,32 @@ def toot(update, context, visibility='public'):
             file_path = BASE_FILE_PATH.format(
                 update.message.chat_id, update.message.message_id)
             if update.message.caption:
-                media_id = upload_media(
-                    update, mastodon_client, file_path)
-                if not mastodon_client.status_post(update.message.caption, visibility=visibility,
-                                                   media_ids=media_id).id:
+                try:
+                    media_id = upload_media(
+                        update, mastodon_client, file_path)
+                    toot_url = mastodon_client.status_post(update.message.caption, visibility=accounts_information["visibility"],
+                                                           media_ids=media_id).url
+                    notify_toot_success(update, context, toot_url)
+                except:
                     notify_toot_error(update, context)
-                else:
-                    notify_toot_success(update, context)
             else:
-                media_id = upload_media(
-                    update, mastodon_client, file_path)
-                if not mastodon_client.status_post(status="", visibility=visibility, media_ids=media_id).id:
+                try:
+                    media_id = upload_media(
+                        update, mastodon_client, file_path)
+                    toot_url = mastodon_client.status_post(
+                        status="", visibility=accounts_information["visibility"], media_ids=media_id).url
+                    notify_toot_success(update, context, toot_url)
+                except:
                     notify_toot_error(update, context)
-                else:
-                    notify_toot_success(update, context)
             os.remove(file_path)
         else:  # for texts
             toot_text = update.message.text
-            if not mastodon_client.status_post(toot_text, visibility=visibility).id:
+            try:
+                toot_url = mastodon_client.status_post(
+                    toot_text, visibility=accounts_information["visibility"]).url or False
+                notify_toot_success(update, context, toot_url)
+            except:
                 notify_toot_error(update, context)
-            else:
-                notify_toot_success(update, context)
     else:
         notify_incomplete_information(update, context)
 
@@ -106,16 +126,16 @@ def verify_account(update, context, user_id):
     try:
         mastodon_client = accounts_information[user_id]["mastodon client"]
         mastodon_client.account_verify_credentials()
+        context.bot.send_message(
+            chat_id=update.message.chat_id,
+            text="Done! Your can now toot as {} to {} \nYour toot will be {}".format(
+                mastodon_client.account_verify_credentials(
+                )["display_name"] or mastodon_client.account_verify_credentials()["username"],
+                accounts_information[user_id]["instances address"], accounts_information["visibility"]), disable_web_page_preview=True)
     except Exception:
         # token or instance not correct
         bot_send_message(
             update, context, "Your information seems to be incorrect. Please reset your instance url and access token")
-    else:
-        context.bot.send_message(
-            chat_id=update.message.chat_id,
-            text="Done! Your can now toot as {} to {}".format(
-                mastodon_client.account_verify_credentials()["display_name"] or mastodon_client.account_verify_credentials()["username"],
-                accounts_information[user_id]["instances address"]), disable_web_page_preview=True)
 
 
 def create_media_dir():
@@ -144,12 +164,11 @@ def notify_incomplete_information(update, context):
 
 
 def bot_send_message(update, context, message):
-
     context.bot.send_message(chat_id=update.message.chat_id, text=message)
 
 
-def notify_toot_success(update, context):
-    bot_send_message(update, context, 'Tooted!')
+def notify_toot_success(update, context, toot_url):
+    bot_send_message(update, context, 'Tooted! '+toot_url)
 
 
 def notify_toot_error(update, context):
@@ -176,6 +195,7 @@ updater = Updater(TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 
 accounts_information = {}
+accounts_information["visibility"] = "public"
 
 # main help message in markdown format
 help_message = """\
@@ -201,8 +221,11 @@ myinfo_handler = CommandHandler('myinfo', my_info)
 userid_handler = CommandHandler('id', send_user_id)
 instance_handler = CommandHandler('set_instance', set_instance_address)
 access_token_handler = CommandHandler('set_accesstoken', set_access_token)
+visibility_handler = CommandHandler('set_visibility', set_visibility)
 
-toot_handler = MessageHandler(filters=Filters.text | Filters.photo, callback=toot)
+toot_handler = MessageHandler(
+    filters=Filters.text | Filters.photo, callback=toot)
+
 
 # add to dispatcher
 dispatcher.add_handler(start_handler)
@@ -211,8 +234,10 @@ dispatcher.add_handler(myinfo_handler)
 dispatcher.add_handler(userid_handler)
 dispatcher.add_handler(instance_handler)
 dispatcher.add_handler(access_token_handler)
+dispatcher.add_handler(visibility_handler)
 
 dispatcher.add_handler(toot_handler)
+
 
 # debug
 logging.basicConfig(
