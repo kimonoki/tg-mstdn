@@ -1,14 +1,24 @@
 # Introduction
 This script creates a telegram bot that can send toot to a given mastodon instance via access token.
 
+## Get token for you bot
+Edit the script to set the token for your telegram bot. [link](https://github.com/kimonoki/tg-mstdn/blob/f79cd6b1469eb3696d377e7af24a2f09d6f2e06c/tg-mastodon.py#L8)
 
-## Use the bot
-1. Set the token for telegram bot. [link](https://github.com/kimonoki/tg-mstdn/blob/33eefe4b9122e90b4a48ef5b69a1bcb4a5eb554f/octondonbot.py#L8)
-2. Set mastodon's instance and access token
-3. Toot
+## Run the script
+On server, you can run from a process management tool like pm2
+```
+pm2 start tg-mastodon.py --interpreter python3
+```
 
-### Toot with images
-Just send the image to the bot. Add caption if you want to send texts with the image.
+## Use the telegram bot
+1. Set mastodon's instance and access token
+```
+/set_instance url
+/set_accesstoken accesstoken
+```
+
+2. Toot
+
 
 
 ## Develop
