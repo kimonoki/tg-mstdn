@@ -7,6 +7,9 @@ This script creates a telegram bot that can send toot to a given mastodon instan
 2. Set mastodon's instance and access token
 3. Toot
 
+### Toot with images
+Just send the image to the bot. Add caption if you want to send texts with the image.
+
 
 ## Develop
 1. Clone the project. 
