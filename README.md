@@ -39,12 +39,11 @@ This bot uses python-telegram package and Mastodon.py with telegram and Mastodon
 
 
 ## TODO
-- Test
-- Error Handling
-- [x]  Send toot in different status
-- Send toots in other formats (video etc.)
-- Multiple instances
-- Stream
+- [ ] Test
+- [x] Send toot in different status
+- [ ] Send toots in other formats (video etc.)
+- [ ] Multiple instances
+- [ ] Stream
 
 
 ## try (to deploy)
