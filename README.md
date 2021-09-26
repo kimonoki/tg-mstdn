@@ -12,13 +12,21 @@ pm2 start tg-mastodon.py --interpreter python3
 
 ## Use the telegram bot
 1. Set mastodon's instance and access token
+
+Needed access scope is: `read:accounts write:media write:statuses`
+
 ```
 /set_instance url
 /set_accesstoken accesstoken
 ```
 
 2. Toot
+Toot directly from your telegram bot!
 
+Set private or unlisted visibility (default is public) by the command:
+```
+/set_visibility visibility 
+```
 
 
 ## Develop
@@ -31,12 +39,11 @@ This bot uses python-telegram package and Mastodon.py with telegram and Mastodon
 
 
 ## TODO
-- Test
-- Error Handling
-- Send toot in different status
-- Send toots in other formats (video etc.)
-- Multiple instances
-- Stream
+- [ ] Test
+- [x] Send toot in different status
+- [ ] Send toots in other formats (video etc.)
+- [ ] Multiple instances
+- [ ] Stream
 
 
 ## try (to deploy)
