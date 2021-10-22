@@ -39,6 +39,7 @@ This bot uses python-telegram package and Mastodon.py with telegram and Mastodon
 
 
 ## TODO
+- [ ] Admin mode
 - [ ] Test
 - [x] Send toot in different status
 - [ ] Send toots in other formats (video etc.)
