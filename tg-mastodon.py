@@ -4,9 +4,14 @@ from telegram import ParseMode
 import logging
 import os
 import sys
+import argparse
 
-TOKEN = 'telegram bot token'
-
+def parse_args():
+    parser = argparse.ArgumentParser(description='Process inputs and options')
+    parser.add_argument('--admin', metavar='<telegram id>',dest='telegram_id',help='Private mode for certain user')
+    parser.add_argument('TOKEN', metavar='<token>',help='Telegram bot token')
+    args = parser.parse_args()
+    return args
 
 # welcome string
 def start(update, context):
@@ -190,6 +195,10 @@ def user_information_is_complete(user_id):
         return False
 
 
+# environment vars
+TOKEN=parse_args().TOKEN
+TELEGRAM_ADMIN_ID=parse_args().telegram_id
+
 # telegram API TOKEN
 updater = Updater(TOKEN, use_context=True)
 dispatcher = updater.dispatcher
@@ -210,7 +219,7 @@ You can check out the source code on github
 """
 
 BASE_FILE_PATH = os.path.abspath(
-    os.path.dirname(sys.argv[0])) + '/tmp/{}_{}.png'
+os.path.dirname(sys.argv[0])) + '/tmp/{}_{}.png'
 
 # start and help handler
 start_handler = CommandHandler('start', start)
@@ -224,7 +233,7 @@ access_token_handler = CommandHandler('set_accesstoken', set_access_token)
 visibility_handler = CommandHandler('set_visibility', set_visibility)
 
 toot_handler = MessageHandler(
-    filters=Filters.text | Filters.photo, callback=toot)
+filters=Filters.text | Filters.photo, callback=toot)
 
 
 # add to dispatcher
@@ -247,6 +256,7 @@ logging.basicConfig(
 # start the bot
 if __name__ == '__main__':
     try:
+        parse_args()
         create_media_dir()
         updater.start_polling()
     except KeyboardInterrupt:  # kill script manually
