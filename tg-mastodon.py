@@ -8,7 +8,7 @@ import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Process inputs and options')
-    parser.add_argument('--admin', metavar='<telegram id>',dest='telegram_id',help='Private mode for certain user')
+    parser.add_argument('--admin', metavar='<telegram id>', dest='telegram_id', type=int, help='Private mode for certain user')
     parser.add_argument('TOKEN', metavar='<token>',help='Telegram bot token')
     args = parser.parse_args()
     return args
@@ -225,12 +225,15 @@ os.path.dirname(sys.argv[0])) + '/tmp/{}_{}.png'
 start_handler = CommandHandler('start', start)
 help_handler = CommandHandler('help', help)
 myinfo_handler = CommandHandler('myinfo', my_info)
-
-# commands handlers
 userid_handler = CommandHandler('id', send_user_id)
-instance_handler = CommandHandler('set_instance', set_instance_address)
-access_token_handler = CommandHandler('set_accesstoken', set_access_token)
-visibility_handler = CommandHandler('set_visibility', set_visibility)
+
+# commands handlers (specific to admin)
+instance_handler = CommandHandler(
+    'set_instance', set_instance_address, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID))
+access_token_handler = CommandHandler(
+    'set_accesstoken', set_access_token, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID))
+visibility_handler = CommandHandler(
+    'set_visibility', set_visibility, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID))
 
 toot_handler = MessageHandler(
 filters=Filters.text | Filters.photo, callback=toot)
