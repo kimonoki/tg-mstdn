@@ -23,6 +23,7 @@ pm2 start 'python3 tg-mastodon.py $telegram_TOKEN'
 ## Use the telegram bot
 1. Set mastodon's instance and access token
 
+Go to Preference/Development/New Applications to create a new application and get access token.
 Needed access scope is: `read:accounts write:media write:statuses`
 
 ```
