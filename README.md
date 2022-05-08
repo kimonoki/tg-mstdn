@@ -2,12 +2,22 @@
 This script creates a telegram bot that can send toot to a given mastodon instance via access token.
 
 ## Get token for you bot
-Edit the script to set the token for your telegram bot. [link](https://github.com/kimonoki/tg-mstdn/blob/f79cd6b1469eb3696d377e7af24a2f09d6f2e06c/tg-mastodon.py#L8)
+Get the token for your telegram bot from @BotFather.
 
 ## Run the script
-On server, you can run from a process management tool like pm2
+
+
 ```
-pm2 start tg-mastodon.py --interpreter python3
+python3 tg-mastodon.py $telegram_TOKEN
+```
+### Run in admin mode to limit user access
+```
+python3 tg-mastodon.py --admin $telegram_userid $telegram_TOKEN
+```
+
+On server, you can run the script from a process management tool like pm2
+```
+pm2 start 'python3 tg-mastodon.py $telegram_TOKEN'
 ```
 
 ## Use the telegram bot
@@ -21,6 +31,7 @@ Needed access scope is: `read:accounts write:media write:statuses`
 ```
 
 2. Toot
+
 Toot directly from your telegram bot!
 
 Set private or unlisted visibility (default is public) by the command:
@@ -35,11 +46,11 @@ Set private or unlisted visibility (default is public) by the command:
 Install [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) and [Mastodon.py](https://github.com/halcy/Mastodon.py) package
 
 ### API used
-This bot uses python-telegram package and Mastodon.py with telegram and Mastodon API. (support the latest version 2021-09-24)
+This bot uses python-telegram package and Mastodon.py with telegram and Mastodon API.
 
 
 ## TODO
-- [ ] Admin mode
+- [x] Admin mode
 - [ ] Test
 - [x] Send toot in different status
 - [ ] Send toots in other formats (video etc.)
