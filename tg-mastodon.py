@@ -213,7 +213,7 @@ Use /myinfo to check if your mastodon account is correctly set up
 
 Send your toots (texts, images) *directly* to me(without command) when you are set up
 Generate your `access` token in Preference->Development with `read and write permission`
-Format of the instance url should be: https://octodon.social
+Format of the instance url should be: octodon.social
 
 You can check out the source code on github
 """
