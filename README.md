@@ -5,8 +5,6 @@ This script creates a telegram bot that can send toot to a given mastodon instan
 Get the token for your telegram bot from @BotFather.
 
 ## Run the script
-
-
 ```
 python3 tg-mastodon.py $telegram_TOKEN
 ```
