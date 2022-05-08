@@ -46,9 +46,6 @@ Set private or unlisted visibility (default is public) by the command:
 2. In python 3 environment. 
 Install [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) and [Mastodon.py](https://github.com/halcy/Mastodon.py) package
 
-### API used
-This bot uses python-telegram package and Mastodon.py with telegram and Mastodon API.
-
 
 ## TODO
 - [x] Admin mode
