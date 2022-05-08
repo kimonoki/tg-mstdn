@@ -133,7 +133,7 @@ def verify_account(update, context, user_id):
         mastodon_client.account_verify_credentials()
         context.bot.send_message(
             chat_id=update.message.chat_id,
-            text="Done! Your can now toot as {} to {} \nYour toot will be {}".format(
+            text="Done! Your can now toot as {} to {} \nYour toot will be {} \nUse /set_visibility to set the visibility of your toots".format(
                 mastodon_client.account_verify_credentials(
                 )["display_name"] or mastodon_client.account_verify_credentials()["username"],
                 accounts_information[user_id]["instances address"], accounts_information["visibility"]), disable_web_page_preview=True)
@@ -229,11 +229,11 @@ userid_handler = CommandHandler('id', send_user_id)
 
 # commands handlers (specific to admin)
 instance_handler = CommandHandler(
-    'set_instance', set_instance_address, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID))
+    'set_instance', set_instance_address, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID)| Filters.all)
 access_token_handler = CommandHandler(
-    'set_accesstoken', set_access_token, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID))
+    'set_accesstoken', set_access_token, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID) | Filters.all)
 visibility_handler = CommandHandler(
-    'set_visibility', set_visibility, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID))
+    'set_visibility', set_visibility, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID) | Filters.all)
 
 toot_handler = MessageHandler(
 filters=Filters.text | Filters.photo, callback=toot)
