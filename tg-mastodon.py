@@ -4,9 +4,14 @@ from telegram import ParseMode
 import logging
 import os
 import sys
+import argparse
 
-TOKEN = 'telegram bot token'
-
+def parse_args():
+    parser = argparse.ArgumentParser(description='Process inputs and options')
+    parser.add_argument('--admin', metavar='<telegram id>', dest='telegram_id', type=int, help='Private mode for certain user')
+    parser.add_argument('TOKEN', metavar='<token>',help='Telegram bot token')
+    args = parser.parse_args()
+    return args
 
 # welcome string
 def start(update, context):
@@ -128,7 +133,7 @@ def verify_account(update, context, user_id):
         mastodon_client.account_verify_credentials()
         context.bot.send_message(
             chat_id=update.message.chat_id,
-            text="Done! Your can now toot as {} to {} \nYour toot will be {}".format(
+            text="Done! Your can now toot as {} to {} \nYour toot will be {} \nUse /set_visibility to set the visibility of your toots".format(
                 mastodon_client.account_verify_credentials(
                 )["display_name"] or mastodon_client.account_verify_credentials()["username"],
                 accounts_information[user_id]["instances address"], accounts_information["visibility"]), disable_web_page_preview=True)
@@ -190,6 +195,10 @@ def user_information_is_complete(user_id):
         return False
 
 
+# environment vars
+TOKEN=parse_args().TOKEN
+TELEGRAM_ADMIN_ID=parse_args().telegram_id
+
 # telegram API TOKEN
 updater = Updater(TOKEN, use_context=True)
 dispatcher = updater.dispatcher
@@ -204,27 +213,30 @@ Use /myinfo to check if your mastodon account is correctly set up
 
 Send your toots (texts, images) *directly* to me(without command) when you are set up
 Generate your `access` token in Preference->Development with `read and write permission`
-Format of the instance url should be: https://octodon.social
+Format of the instance url should be: octodon.social
 
 You can check out the source code on github
 """
 
 BASE_FILE_PATH = os.path.abspath(
-    os.path.dirname(sys.argv[0])) + '/tmp/{}_{}.png'
+os.path.dirname(sys.argv[0])) + '/tmp/{}_{}.png'
 
 # start and help handler
 start_handler = CommandHandler('start', start)
 help_handler = CommandHandler('help', help)
 myinfo_handler = CommandHandler('myinfo', my_info)
-
-# commands handlers
 userid_handler = CommandHandler('id', send_user_id)
-instance_handler = CommandHandler('set_instance', set_instance_address)
-access_token_handler = CommandHandler('set_accesstoken', set_access_token)
-visibility_handler = CommandHandler('set_visibility', set_visibility)
+
+# commands handlers (specific to admin)
+instance_handler = CommandHandler(
+    'set_instance', set_instance_address, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID)| Filters.all)
+access_token_handler = CommandHandler(
+    'set_accesstoken', set_access_token, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID) | Filters.all)
+visibility_handler = CommandHandler(
+    'set_visibility', set_visibility, filters=Filters.user(user_id=TELEGRAM_ADMIN_ID) | Filters.all)
 
 toot_handler = MessageHandler(
-    filters=Filters.text | Filters.photo, callback=toot)
+filters=Filters.text | Filters.photo, callback=toot)
 
 
 # add to dispatcher
@@ -247,6 +259,7 @@ logging.basicConfig(
 # start the bot
 if __name__ == '__main__':
     try:
+        parse_args()
         create_media_dir()
         updater.start_polling()
     except KeyboardInterrupt:  # kill script manually
